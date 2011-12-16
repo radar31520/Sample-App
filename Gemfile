@@ -36,6 +36,7 @@ gem 'therubyracer'
 group :test do
   # Pretty printed test output
   gem 'rspec'
+  gem 'webrat'
 end
 
 group :development do

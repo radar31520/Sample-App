@@ -4,7 +4,7 @@
 
 body{
 	background: #c55;
-
+	font-size: 100%;
 }
 
 header {
@@ -24,9 +24,9 @@ section {
 }
 
 /* Links */
-a{
-	color: #09c;
-	text-decoration: none;
+a {
+  color: #09c;
+  text-decoration: none;
 }
 
 a:hover{
@@ -71,15 +71,15 @@ nav ul li a:hover{
 
 }
 
-a.signup_button{
+a.signup_button {
 	margin-left: auto;
 	margin-right: auto;
 	display: block;
 	text-align: center;
-	width: 300px;
+	width: 190px;
 	color: #fff;
 	background: #006400;
-	font-size: 150%
+	font-size: 150%;
 	font-weight: bold;
 	padding: 20px;
 }

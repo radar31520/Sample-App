@@ -5,32 +5,36 @@ require 'spec_helper'
 #
 # Table name: users
 #
-#  id         :integer         not null, primary key
-#  name       :string(255)
-#  email      :string(255)
-#  created_at :datetime
-#  updated_at :datetime
+#  id                 :integer         not null, primary key
+#  name               :string(255)
+#  email              :string(255)
+#  created_at         :datetime
+#  updated_at         :datetime
+#  encrypted_password :string(255)
 #
 
 
 describe User do
 
   before(:each) do
-    @test_user = { :name => "User", :email => "user@example.com"}
+    @test_user = {  :name => "User",
+                    :email => "user@example.com",
+                    :password => "password",
+                    :password_confirmation => "password"}
   end
 
   it "should create a new instance given a valid attribute" do
     User.create!(@test_user)
   end
 
-   it "should require a name" do
+  it "should require a name" do
     no_name_user = User.new(@test_user.merge(:name => ""))
     #calls valid? on no_name_user
     no_name_user.should_not be_valid
   end
 
 
-   it "should require a email address" do
+  it "should require a email address" do
     no_email_user = User.new(@test_user.merge(:email => ""))
     no_email_user.should_not be_valid
   end
@@ -67,6 +71,55 @@ describe User do
     User.create!(@test_user)
     user_with_duplicate_email = User.new(@test_user.merge(:email => @test_user[:email].upcase))
     user_with_duplicate_email.should_not be_valid
+  end
+
+  describe "passwords" do
+
+    before(:each) do
+      @user = User.new(@test_user)
+    end
+
+    it "should have a password attribute" do
+      @user.should respond_to(:password)
+    end
+
+    it "should have a password confirmation attribute" do
+      @user.should respond_to(:password_confirmation)
+    end
+
+  end
+
+  describe "password_validations" do
+
+    it "should require a password" do
+      User.new(@test_user.merge(:password => "", :password_confirmation =>"")).should_not be_valid
+    end
+
+    it "should require a matching password confirmation" do
+      User.new(@test_user.merge(:password_confirmation =>"invalid_confirmation")).should_not be_valid
+    end
+
+    it "should reject a short password " do
+      short = "a" * 5
+      User.new(@test_user.merge(:password =>short, :password_confirmation => short)).should_not be_valid
+    end
+
+    it "should reject a long password" do
+      long = "a" * 41
+      User.new(@test_user.merge(:password =>long, :password_confirmation => long)).should_not be_valid
+    end
+
+  end
+  describe "password encryption" do
+
+    before(:each) do
+      @user = User.create!(@test_user)
+    end
+
+    it "should have an encrypted password attribute" do
+      @user.should respond_to(:encrypted_password)
+    end
+
   end
 
 end

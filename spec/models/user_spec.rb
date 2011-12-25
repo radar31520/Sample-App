@@ -110,6 +110,7 @@ describe User do
     end
 
   end
+
   describe "password encryption" do
 
     before(:each) do
@@ -120,7 +121,35 @@ describe User do
       @user.should respond_to(:encrypted_password)
     end
 
+    it "should set an encrypted password attribute" do
+      @user.encrypted_password.should_not be_blank
+    end
+
+    it "it should have a salt" do
+      @user.should respond_to(:salt)
+    end
+
   end
+
+   describe "has_password" do
+
+    before(:each) do
+      @user = User.create!(@test_user)
+    end
+
+    it "it should exist" do
+      @user.should respond_to(:has_password?)
+    end
+
+    it "should return true if the passwords match" do
+      @user.has_password?(@test_user[:password]).should be_true
+    end
+
+    it "should return false if the passwords do not match" do
+      @user.has_password?("invalid_password").should be_false
+    end
+  end
+
 
 end
 

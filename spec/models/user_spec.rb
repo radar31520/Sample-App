@@ -113,43 +113,56 @@ describe User do
 
   describe "password encryption" do
 
-    before(:each) do
-      @user = User.create!(@test_user)
-    end
+      before(:each) do
+        @user = User.create!(@test_user)
+      end
 
-    it "should have an encrypted password attribute" do
-      @user.should respond_to(:encrypted_password)
-    end
+      it "should have an encrypted password attribute" do
+        @user.should respond_to(:encrypted_password)
+      end
 
-    it "should set an encrypted password attribute" do
-      @user.encrypted_password.should_not be_blank
-    end
+      it "should set an encrypted password attribute" do
+        @user.encrypted_password.should_not be_blank
+      end
 
-    it "it should have a salt" do
-      @user.should respond_to(:salt)
-    end
+      it "it should have a salt" do
+        @user.should respond_to(:salt)
+      end
 
+     describe "has_password" do
+
+        it "it should exist" do
+          @user.should respond_to(:has_password?)
+        end
+
+        it "should return true if the passwords match" do
+          @user.has_password?(@test_user[:password]).should be_true
+        end
+
+        it "should return false if the passwords do not match" do
+          @user.has_password?("invalid_password").should be_false
+        end
+      end
+
+    describe "authenticate method" do
+
+      it "it should exist" do
+        User.should respond_to(:authenticate)
+      end
+
+
+      it "should return nil on email/password mismatch" do
+        User.authenticate(@test_user[:email], "wrongpass").should be_nil
+      end
+
+      it "should return nil on email with not user" do
+        User.authenticate("wrongpass@email.com", @test_user[:password]).should be_nil
+      end
+
+      it "should return actual user" do
+        User.authenticate(@test_user[:email], @test_user[:password]).should == @user
+      end
+    end
   end
-
-   describe "has_password" do
-
-    before(:each) do
-      @user = User.create!(@test_user)
-    end
-
-    it "it should exist" do
-      @user.should respond_to(:has_password?)
-    end
-
-    it "should return true if the passwords match" do
-      @user.has_password?(@test_user[:password]).should be_true
-    end
-
-    it "should return false if the passwords do not match" do
-      @user.has_password?("invalid_password").should be_false
-    end
-  end
-
-
 end
 

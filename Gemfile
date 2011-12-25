@@ -5,9 +5,9 @@ gem 'rails', '3.1.3'
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
 
-gem 'sqlite3'
 
 gem 'gravatar_image_tag'
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -43,5 +43,11 @@ group :development do
   gem 'rspec-rails'
   gem 'annotate', :git => 'git://github.com/jeremyolliver/annotate_models.git', :branch => 'rake_compatibility'
   gem 'factory_girl'
+  gem 'sqlite3'
+end
+
+group :production do
+ # This is for heroku
+ gem 'pg'
 end
 
